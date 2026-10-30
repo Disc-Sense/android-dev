@@ -1,10 +1,6 @@
 # android-dev
 
-Basic Flutter starter template project.
-
-## Included starter setup
-
-- Flutter-based Android project with `app` module
+Flutter project for the Disc-sense application.
 
 ## Build and test
 
@@ -12,3 +8,4 @@ from the project directory, run:
 ```bash
 flutter run -d chrome
 ```
+to view the app through a window
