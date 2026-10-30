@@ -8,6 +8,7 @@ Basic Flutter starter template project.
 
 ## Build and test
 
+from the project directory, run: 
 ```bash
-flutter
+flutter run -d chrome
 ```
