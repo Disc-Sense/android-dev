@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'stats_page.dart';
 import 'video_page.dart';
+import 'settings_page.dart';
 
 void main() {
+  debugPaintSizeEnabled = false; // Enable visual debugging of layout issues
   runApp(const DiscSenseApp());
 }
 
@@ -47,6 +50,11 @@ class _AppShellState extends State<AppShell> {
       HomePage(
         onOpenStats: () => setState(() => _selectedIndex = 1),
         onOpenVideo: () => setState(() => _selectedIndex = 2),
+        onOpenSettings: () {
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute<void>(builder: (_) => const SettingsPage()));
+        },
       ),
       const StatsPage(),
       const VideoPage(),
@@ -86,10 +94,12 @@ class HomePage extends StatelessWidget {
     super.key,
     required this.onOpenStats,
     required this.onOpenVideo,
+    required this.onOpenSettings,
   });
 
   final VoidCallback onOpenStats;
   final VoidCallback onOpenVideo;
+  final VoidCallback onOpenSettings;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +108,7 @@ class HomePage extends StatelessWidget {
         title: const Text('Disc Sense'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: onOpenSettings,
             icon: const Icon(Icons.settings_outlined),
             tooltip: 'Settings',
           ),
