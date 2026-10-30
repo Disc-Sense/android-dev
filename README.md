@@ -1,18 +1,14 @@
 # android-dev
 
-Basic Android starter template project.
+Basic Flutter starter template project.
 
 ## Included starter setup
 
-- Gradle-based Android project with `app` module
-- `MainActivity` launcher activity
-- Basic resources (`strings`, `themes`, `colors`, layout)
-- Starter unit and instrumented test classes
+- Flutter-based Android project with `app` module
 
 ## Build and test
 
+from the project directory, run: 
 ```bash
-./gradlew assembleDebug
-./gradlew testDebugUnitTest
-./gradlew lint
+flutter run -d chrome
 ```
