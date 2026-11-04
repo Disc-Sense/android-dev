@@ -1,33 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'objectbox.g.dart'; // Import generated Objectbox code
 
-class _Player {
-  final String name;
-  final int points;
-  final int assists;
-  final int turnovers;
-  final int blocks;
-
-  _Player({
-    required this.name,
-    required this.points,
-    required this.assists,
-    required this.turnovers,
-    required this.blocks,
-  });
-}
-
-class _Game {
-  final String opponent;
-  final List<_Player> players;
-
-  _Game({required this.opponent, required List<_Player> players})
-    : players = List.unmodifiable(players);
-}
+import 'game_model.dart';
 
 class StatsPage extends StatefulWidget {
-  const StatsPage({super.key});
+  const StatsPage({super.key, this.gameModel});
+
+  final GameModel? gameModel;
 
   @override
   State<StatsPage> createState() => _StatsPageState();
@@ -40,10 +18,16 @@ class _StatsPageState extends State<StatsPage> {
   int _assists = 0;
   int _turnovers = 0;
   int _blocks = 0;
-  final List<_Player> _players = [];
-  final List<_Game> _games = [];
+  final List<Player> _players = [];
+  late final List<Game> _games;
   bool _isAddingPlayer = false;
   int? _selectedPlayerIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _games = widget.gameModel?.getAllGames() ?? [];
+  }
 
   void _showAddPlayerField() {
     setState(() {
@@ -78,7 +62,7 @@ class _StatsPageState extends State<StatsPage> {
 
     setState(() {
       _players.add(
-        _Player(
+        Player(
           name: name,
           points: _points,
           assists: _assists,
@@ -121,8 +105,12 @@ class _StatsPageState extends State<StatsPage> {
       return;
     }
 
+    final game =
+        widget.gameModel?.saveGame(opponent, _players) ??
+        (Game(opponent: opponent)..players.addAll(_players));
+
     setState(() {
-      _games.add(_Game(opponent: opponent, players: _players));
+      _games.add(game);
       _players.clear();
       _teamController.clear();
       _selectedPlayerIndex = null;
@@ -160,7 +148,7 @@ class _StatsPageState extends State<StatsPage> {
       final selectedIndex = _selectedPlayerIndex;
       if (selectedIndex != null) {
         final player = _players[selectedIndex];
-        _players[selectedIndex] = _Player(
+        _players[selectedIndex] = Player(
           name: player.name,
           points: _points,
           assists: _assists,

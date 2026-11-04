@@ -41,11 +41,36 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "2:1260498476683671515",
+      "lastPropertyId": "2:7649691527667745494",
+      "name": "Game",
+      "properties": [
+        {
+          "id": "1:1691935062514055758",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7649691527667745494",
+          "name": "opponent",
+          "type": 9
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:3961726401260521812",
+          "name": "players",
+          "targetId": "1:1158615551759842915"
+        }
+      ]
     }
   ],
-  "lastEntityId": "1:1158615551759842915",
+  "lastEntityId": "2:1260498476683671515",
   "lastIndexId": "0:0",
-  "lastRelationId": "0:0",
+  "lastRelationId": "1:3961726401260521812",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,

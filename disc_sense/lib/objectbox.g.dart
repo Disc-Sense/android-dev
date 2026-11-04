@@ -65,6 +65,34 @@ final _entities = <obx_int.ModelEntity>[
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
   ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(2, 1260498476683671515),
+    name: 'Game',
+    lastPropertyId: const obx_int.IdUid(2, 7649691527667745494),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 1691935062514055758),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 7649691527667745494),
+        name: 'opponent',
+        type: 9,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[
+      obx_int.ModelRelation(
+        id: const obx_int.IdUid(1, 3961726401260521812),
+        name: 'players',
+        targetId: const obx_int.IdUid(1, 1158615551759842915),
+      ),
+    ],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -106,9 +134,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
     // Typically, this is done with `dart run build_runner build`.
     generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(1, 1158615551759842915),
+    lastEntityId: const obx_int.IdUid(2, 1260498476683671515),
     lastIndexId: const obx_int.IdUid(0, 0),
-    lastRelationId: const obx_int.IdUid(0, 0),
+    lastRelationId: const obx_int.IdUid(1, 3961726401260521812),
     lastSequenceId: const obx_int.IdUid(0, 0),
     retiredEntityUids: const [],
     retiredIndexUids: const [],
@@ -170,6 +198,39 @@ obx_int.ModelDefinition getObjectBoxModel() {
         return object;
       },
     ),
+    Game: obx_int.EntityDefinition<Game>(
+      model: _entities[1],
+      toOneRelations: (Game object) => [],
+      toManyRelations: (Game object) => {
+        obx_int.RelInfo<Game>.toMany(1, object.id): object.players,
+      },
+      getId: (Game object) => object.id,
+      setId: (Game object, int id) {
+        object.id = id;
+      },
+      objectToFB: (Game object, fb.Builder fbb) {
+        final opponentOffset = fbb.writeString(object.opponent);
+        fbb.startTable(3);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, opponentOffset);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final opponentParam = const fb.StringReader(asciiOptimization: true)
+            .vTableGet(buffer, rootOffset, 6, '');
+        final object = Game(opponent: opponentParam)
+          ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+        obx_int.InternalToManyAccess.setRelInfo<Game>(
+          object.players,
+          store,
+          obx_int.RelInfo<Game>.toMany(1, object.id),
+        );
+        return object;
+      },
+    ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -205,5 +266,21 @@ class Player_ {
   /// See [Player.blocks].
   static final blocks = obx.QueryIntegerProperty<Player>(
     _entities[0].properties[5],
+  );
+}
+
+/// [Game] entity fields to define ObjectBox queries.
+class Game_ {
+  /// See [Game.id].
+  static final id = obx.QueryIntegerProperty<Game>(_entities[1].properties[0]);
+
+  /// See [Game.opponent].
+  static final opponent = obx.QueryStringProperty<Game>(
+    _entities[1].properties[1],
+  );
+
+  /// see [Game.players]
+  static final players = obx.QueryRelationToMany<Game, Player>(
+    _entities[1].relations[0],
   );
 }

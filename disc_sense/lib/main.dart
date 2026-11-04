@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import 'game_model.dart';
 import 'stats_page.dart';
 import 'video_page.dart';
 import 'settings_page.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   debugPaintSizeEnabled = false; // Enable visual debugging of layout issues
-  runApp(const DiscSenseApp());
+  final gameModel = await GameModel.create();
+  runApp(DiscSenseApp(gameModel: gameModel));
 }
 
 class DiscSenseApp extends StatelessWidget {
-  const DiscSenseApp({super.key});
+  const DiscSenseApp({super.key, this.gameModel});
+
+  final GameModel? gameModel;
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +34,15 @@ class DiscSenseApp extends StatelessWidget {
           border: OutlineInputBorder(),
         ),
       ),
-      home: const AppShell(),
+      home: AppShell(gameModel: gameModel),
     );
   }
 }
 
 class AppShell extends StatefulWidget {
-  const AppShell({super.key});
+  const AppShell({super.key, this.gameModel});
+
+  final GameModel? gameModel;
 
   @override
   State<AppShell> createState() => _AppShellState();
@@ -56,7 +63,7 @@ class _AppShellState extends State<AppShell> {
           ).push(MaterialPageRoute<void>(builder: (_) => const SettingsPage()));
         },
       ),
-      const StatsPage(),
+      StatsPage(gameModel: widget.gameModel),
       const VideoPage(),
     ];
 
