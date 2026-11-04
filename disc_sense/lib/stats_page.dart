@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'game_model.dart';
+import 'bluetooth.dart';
+
+// TODO: Create member of game model to hold data sent by PI regarding stats and/or states
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key, this.gameModel});

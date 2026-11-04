@@ -38,6 +38,7 @@ dependencies:
   path: ^1.9.1
   objectbox: ^6.0.0-preview.4
   objectbox_flutter_libs: any
+  flutter_blue_plus: ^2.3.14
 
 dev_dependencies:
   flutter_test:

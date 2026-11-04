@@ -6,6 +6,8 @@ import 'stats_page.dart';
 import 'video_page.dart';
 import 'settings_page.dart';
 
+//TODO: Add platform permissions to AndroidManifest.xml (BLUETOOTH_SCAN and BLUETOOTH_CONNECT and maybe location perms)
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   debugPaintSizeEnabled = false; // Enable visual debugging of layout issues

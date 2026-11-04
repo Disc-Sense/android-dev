@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'bluetooth.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -9,6 +10,8 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final _playerController = TextEditingController();
+  dynamic _connected = 0;
+
   @override
   void dispose() {
     _playerController.dispose();
@@ -42,6 +45,20 @@ class _SettingsPageState extends State<SettingsPage> {
             style: Theme.of(context).textTheme.titleLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
           ),
+          const SizedBox(height: 24),
+          Text(
+            'Bluetooth Settings',
+            style: Theme.of(context).textTheme.titleLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+              OutlinedButton.icon(
+                onPressed: () {_connected = BluetoothPeripheral.connectBluetooth();},
+                icon: const Icon(Icons.bluetooth),
+                label: Text(
+                  _connected ? 'Bluetooth Device Connected' : 'Connect Bluetooth Device',
+                ),
+              ),
           const SizedBox(height: 24),
           FilledButton.icon(
             onPressed: () {

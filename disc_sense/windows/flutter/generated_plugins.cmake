@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  flutter_blue_plus_winrt
   objectbox_flutter_libs
 )
 
