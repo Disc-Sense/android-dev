@@ -39,6 +39,7 @@ dependencies:
   objectbox: ^6.0.0-preview.4
   objectbox_flutter_libs: any
   flutter_blue_plus: ^2.3.14
+  permission_handler: ^13.0.2
 
 dev_dependencies:
   flutter_test:

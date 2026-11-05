@@ -29,6 +29,13 @@ class Game {
   Game({required this.opponent});
 }
 
+// class for holding data received from the PI for each game
+@Entity()
+class Timestamps {
+  dynamic data;
+  Timestamps();
+}
+
 class GameModel {
   late final Store _store;
   late final Box<Game> _gameBox;
