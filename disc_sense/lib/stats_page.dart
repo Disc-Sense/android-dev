@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'game_model.dart';
-import 'bluetooth.dart';
 
 // TODO: Create member of game model to hold data sent by PI regarding stats and/or states
 
@@ -25,6 +24,7 @@ class _StatsPageState extends State<StatsPage> {
   late final List<Game> _games;
   bool _isAddingPlayer = false;
   int? _selectedPlayerIndex;
+  Game? _selectedGame;
 
   @override
   void initState() {
@@ -37,6 +37,50 @@ class _StatsPageState extends State<StatsPage> {
       _isAddingPlayer = true;
       _selectedPlayerIndex = null;
       _playerController.clear();
+      _points = 0;
+      _assists = 0;
+      _turnovers = 0;
+      _blocks = 0;
+    });
+  }
+
+  void _resetGameForm() {
+    _teamController.clear();
+    _playerController.clear();
+    _players.clear();
+    _selectedGame = null;
+    _selectedPlayerIndex = null;
+    _isAddingPlayer = false;
+    _points = 0;
+    _assists = 0;
+    _turnovers = 0;
+    _blocks = 0;
+  }
+
+  void _selectGame(Game game) {
+    if (_selectedGame == game) {
+      setState(_resetGameForm);
+      return;
+    }
+
+    setState(() {
+      _selectedGame = game;
+      _teamController.text = game.opponent;
+      _players
+        ..clear()
+        ..addAll(
+          game.players.map(
+            (player) => Player(
+              name: player.name,
+              points: player.points,
+              assists: player.assists,
+              turnovers: player.turnovers,
+              blocks: player.blocks,
+            ),
+          ),
+        );
+      _selectedPlayerIndex = null;
+      _isAddingPlayer = false;
       _points = 0;
       _assists = 0;
       _turnovers = 0;
@@ -108,24 +152,59 @@ class _StatsPageState extends State<StatsPage> {
       return;
     }
 
-    final game =
-        widget.gameModel?.saveGame(opponent, _players) ??
-        (Game(opponent: opponent)..players.addAll(_players));
+    final selectedGame = _selectedGame;
+    if (selectedGame == null) {
+      final game =
+          widget.gameModel?.saveGame(opponent, _players) ??
+          (Game(opponent: opponent)..players.addAll(_players));
+      setState(() => _games.add(game));
+    } else {
+      if (widget.gameModel != null) {
+        widget.gameModel!.updateGame(selectedGame, opponent, _players);
+      } else {
+        selectedGame.opponent = opponent;
+        selectedGame.players
+          ..clear()
+          ..addAll(_players);
+      }
+    }
 
     setState(() {
-      _games.add(game);
-      _players.clear();
-      _teamController.clear();
-      _selectedPlayerIndex = null;
-      _isAddingPlayer = false;
-      _points = 0;
-      _assists = 0;
-      _turnovers = 0;
-      _blocks = 0;
+      _resetGameForm();
     });
 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Game stats saved.')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          selectedGame == null ? 'Game stats saved.' : 'Game stats updated.',
+        ),
+      ),
+    );
+  }
+
+  void _deleteGame() {
+    final selectedGame = _selectedGame;
+    dynamic deletedGame = false;
+    if (selectedGame != null && widget.gameModel != null) {
+      if (widget.gameModel!.deleteGame(selectedGame)) {
+        _games.remove(selectedGame);
+        deletedGame = true;
+      } else {
+        deletedGame = false;
+      }
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          deletedGame ? 'Game Deleted Successfully' : 'Game Not Deleted',
+        ),
+      ),
+    );
+
+    setState(() {
+      _resetGameForm();
+    });
   }
 
   @override
@@ -284,8 +363,20 @@ class _StatsPageState extends State<StatsPage> {
               FilledButton.icon(
                 onPressed: _saveGame,
                 icon: const Icon(Icons.save_outlined),
-                label: const Text('Save game'),
+                label: Text(
+                  _selectedGame == null ? 'Save game' : 'Update game',
+                ),
               ),
+              if (_selectedGame != null) ...[
+                const SizedBox(height: 24),
+                FilledButton.icon(
+                  onPressed: _deleteGame,
+                  icon: const Icon(Icons.delete_forever_outlined),
+                  label: Text(
+                    'Delete Game',
+                  ),
+                ),
+              ],
               if (_games.isNotEmpty) ...[
                 const SizedBox(height: 28),
                 Text(
@@ -302,6 +393,8 @@ class _StatsPageState extends State<StatsPage> {
                       subtitle: Text(
                         '${game.players.length} player(s) recorded',
                       ),
+                      selected: _selectedGame == game,
+                      onTap: () => _selectGame(game),
                     ),
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+
 import 'objectbox.g.dart';
 
 @Entity()
@@ -60,6 +61,18 @@ class GameModel {
     game.players.addAll(players);
     _gameBox.put(game);
     return game;
+  }
+
+  void updateGame(Game game, String opponent, Iterable<Player> players) {
+    game.opponent = opponent;
+    game.players
+      ..clear()
+      ..addAll(players);
+    _gameBox.put(game);
+  }
+
+  bool deleteGame(Game game) {
+    return _gameBox.remove(game.id);
   }
 
   void close() {

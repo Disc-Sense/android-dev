@@ -12,7 +12,7 @@ class BluetoothPeripheral {
   BluetoothPeripheral();
 
   // Setup Bluetooth communication with the Raspberry Pi
-  static Future<dynamic> connectBluetooth() async {
+  static Future<bool> connectBluetooth() async {
     // Verify Bluetooth is enabled
     if (FlutterBluePlus.adapterStateNow != BluetoothAdapterState.on) {
       print("Error: Bluetooth Not Enabled");
@@ -66,6 +66,7 @@ class BluetoothPeripheral {
     } catch (err) {
       print(err);
     }
+    return false;
   }
 
   // Send data to Pi

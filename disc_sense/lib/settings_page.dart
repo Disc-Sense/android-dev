@@ -10,7 +10,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final _playerController = TextEditingController();
-  dynamic _connected = 0;
+  dynamic _connected = false;
 
   @override
   void dispose() {
