@@ -2,6 +2,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 import 'objectbox.g.dart';
+import 'bluetooth.dart';
 
 @Entity()
 class Player {
@@ -26,15 +27,9 @@ class Game {
   int id = 0;
   String opponent;
   final players = ToMany<Player>();
+  List<dynamic> timestamps = [];
 
   Game({required this.opponent});
-}
-
-// class for holding data received from the PI for each game
-@Entity()
-class Timestamps {
-  dynamic data;
-  Timestamps();
 }
 
 class GameModel {
@@ -73,6 +68,11 @@ class GameModel {
 
   bool deleteGame(Game game) {
     return _gameBox.remove(game.id);
+  }
+
+  void addTimestamp(Game game) {
+    game.timestamps.add(BluetoothPeripheral.receiveData());
+    _gameBox.put(game);
   }
 
   void close() {
