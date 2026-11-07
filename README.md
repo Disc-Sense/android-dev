@@ -57,6 +57,22 @@ Note: data is exchanged with the database and bluetooth peripheral, but connecti
 - **Settings:** Provides cloud-storage input, privacy headings, Bluetooth
   connection, and a save-settings action.
 
+## Directory layout
+
+```text
+.
+└── disc_sense            # Flutter Project Directory
+    └── lib/
+        ├── main.dart                # Homepage UI
+        ├── settings_page.dart       # Settings UI
+        ├── stats_page.dart          # Statistics UI + Database interaction
+        ├── video_page.dart          # Video Recording UI 
+        ├── bluetooth.dart           # Bluetooth communication library
+        ├── game_model.dart          # Database entry models/entities
+        ├── objectbox-model.json     # Schema Tracking File
+        └── objectbox.g.dart         # Generated Code Mapping Dart @Entity classes to internal C database
+```
+
 ## Building and testing
 
 To build the application into an executable or apk file, the relevant SDKs must be installed. 
