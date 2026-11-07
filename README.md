@@ -45,6 +45,7 @@ flowchart TD
  style BluetoothPeripheral fill:#800
 
 ```
+Note: data is exchanged with the database and bluetooth peripheral, but connections between pages denote UI paths
 
 ## Main UI states
 
