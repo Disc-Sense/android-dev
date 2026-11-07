@@ -20,7 +20,41 @@ A rudimentary structure for error handling while scanning for the correct servic
 
 ## Software Flowchart
 
+```mermaid
+flowchart TD
+    Start([App starts]) --> Home[Home Page]
 
+    Home --> Settings[Settings Page]
+    Home --> Record[Record Page]
+    Home--> Stats[Statistics Page] 
+
+    Stats --> Home
+    Stats --> Record
+    Stats --> Database[Database]
+    BluetoothPeripheral --> Stats
+    Database --> Stats
+
+    Record --> Home
+    Record --> Stats
+    Record --> BluetoothPeripheral[Bluetooth Peripheral]
+
+    Settings --> Home
+    Settings --> BluetoothPeripheral
+
+ style Record fill:#800
+ style BluetoothPeripheral fill:#800
+
+```
+
+## Main UI states
+
+- **Home:** Entry point with shortcuts to Stats, Record, and Settings.
+- **Stats:** Creates new games, edits saved games, deletes selected games, and
+  stores game/player data.
+- **Record:** Toggles between ready and recording states. The camera preview
+  and camera switching are currently placeholders.
+- **Settings:** Provides cloud-storage input, privacy headings, Bluetooth
+  connection, and a save-settings action.
 
 ## Building and testing
 
