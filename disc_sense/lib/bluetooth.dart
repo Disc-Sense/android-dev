@@ -11,6 +11,11 @@ class BluetoothPeripheral {
 
   BluetoothPeripheral();
 
+  // Report Connection Status
+  static bool isConnected() {
+    return _device.isConnected();
+  }
+
   // Setup Bluetooth communication with the Raspberry Pi
   static Future<bool> connectBluetooth() async {
     // Verify Bluetooth is enabled

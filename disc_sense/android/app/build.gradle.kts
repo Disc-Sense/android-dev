@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.disc_sense"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37                         // Hardcoded (build complained about 37 support and it was autobinding to 36)
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
